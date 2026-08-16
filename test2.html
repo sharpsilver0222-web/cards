@@ -9,14 +9,18 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   <title>[test2 滚动模式] 灵感记录卡 · Inspire Cards</title>
-  <link rel="stylesheet" href="css/themes.css?v=20260816v13" />
-  <link rel="stylesheet" href="css/animations.css?v=20260816v13" />
-  <link rel="stylesheet" href="css/style.css?v=20260816v13" />
+  <link rel="stylesheet" href="css/themes.css?v=20260816v14" />
+  <link rel="stylesheet" href="css/animations.css?v=20260816v14" />
+  <link rel="stylesheet" href="css/style.css?v=20260816v14" />
   <!-- 预置数据：16 张卡片，内容较长超出 1 屏 → 滚动模式 -->
+  <!-- 使用独立 localStorage 命名空间，避免污染 index.html 的真实数据 -->
   <script>
     (function () {
-      var KEY_CARDS = 'inspire_cards';
-      var KEY_CONFIG = 'inspire_config';
+      var KEY_CARDS = 'inspire_cards_test2';
+      var KEY_CONFIG = 'inspire_config_test2';
+      // 注册到 window，让 storage.js 读取同一份测试数据
+      window.INSPIRE_KEY_CARDS = KEY_CARDS;
+      window.INSPIRE_KEY_CONFIG = KEY_CONFIG;
       var now = Date.now();
       var titles = [
         '01 · 产品架构总览',
@@ -175,13 +179,13 @@
   </main>
 
   <!-- ========== JS 脚本 ========== -->
-  <script src="js/utils.js?v=20260816v13"></script>
-  <script src="js/storage.js?v=20260816v13"></script>
-  <script src="js/theme.js?v=20260816v13"></script>
-  <script src="js/matrix-bg.js?v=20260816v13"></script>
-  <script src="js/cards.js?v=20260816v13"></script>
-  <script src="js/editor.js?v=20260816v13"></script>
-  <script src="js/guide.js?v=20260816v13"></script>
-  <script src="js/app.js?v=20260816v13"></script>
+  <script src="js/utils.js?v=20260816v14"></script>
+  <script src="js/storage.js?v=20260816v14"></script>
+  <script src="js/theme.js?v=20260816v14"></script>
+  <script src="js/matrix-bg.js?v=20260816v14"></script>
+  <script src="js/cards.js?v=20260816v14"></script>
+  <script src="js/editor.js?v=20260816v14"></script>
+  <script src="js/guide.js?v=20260816v14"></script>
+  <script src="js/app.js?v=20260816v14"></script>
 </body>
 </html>

@@ -4,8 +4,10 @@
 (function (global) {
   'use strict';
 
-  const KEY_CARDS = 'inspire_cards_v1';
-  const KEY_CONFIG = 'inspire_config_v1';
+  // 支持测试文件通过 window.INSPIRE_KEY_CARDS / INSPIRE_KEY_CONFIG 注入独立命名空间，
+  // 避免测试预置数据污染 index.html 的真实数据（同 origin 下 localStorage 共享）
+  const KEY_CARDS = global.INSPIRE_KEY_CARDS || 'inspire_cards_v1';
+  const KEY_CONFIG = global.INSPIRE_KEY_CONFIG || 'inspire_config_v1';
   const DATA_VERSION = '1.0';
 
   const DEFAULT_CONFIG = {
