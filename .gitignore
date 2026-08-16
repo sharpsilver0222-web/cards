@@ -1,0 +1,33 @@
+# -------- 环境 / 操作系统 --------
+.DS_Store
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# -------- 编辑器 / IDE --------
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+.atom/
+
+# -------- 临时文件 / 日志 --------
+*.log
+*.tmp
+*.bak
+*.bak[0-9]
+
+# -------- 本地导出备份 --------
+# （灵感记录卡导出的 JSON 不想被提交，可按需要注释下面两行）
+*.export.json
+*.export-[0-9]*.json
+
+# -------- 浏览器缓存 / 静态服务器产物 --------
+*.cache
+.cache/
+dist/
+build/
+
+# -------- 本地测试截图（不进仓库，如需提交请移除下面一行）--------
+*.png

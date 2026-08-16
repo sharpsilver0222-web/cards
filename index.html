@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="green" data-font="mono">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="灵感记录卡 - 黑客风格的本地灵感记录工具" />
+  <!-- ========== 彻底禁用浏览器缓存（解决 304 读取旧 JS/CSS 导致"修了白修"问题） ========== -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, max-age=0" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title>灵感记录卡 · Inspire Cards</title>
+  <link rel="stylesheet" href="css/themes.css?v=20260816v13" />
+  <link rel="stylesheet" href="css/animations.css?v=20260816v13" />
+  <link rel="stylesheet" href="css/style.css?v=20260816v13" />
+</head>
+<body>
+  <!-- ========== 顶部导航栏 ========== -->
+  <header class="topbar">
+    <div class="topbar-logo">
+      <span class="topbar-logo-icon" title="灵感记录卡">💡</span>
+      <span class="topbar-logo-text">灵感记录卡</span>
+    </div>
+
+    <div class="topbar-search">
+      <input
+        id="search-input"
+        type="search"
+        placeholder="搜索标题、内容或标签..."
+        autocomplete="off"
+        spellcheck="false"
+      />
+    </div>
+
+    <div class="topbar-controls">
+      <!-- 排序 -->
+      <div class="select-wrap" title="排序方式">
+        <select id="sort-select" aria-label="排序方式"></select>
+      </div>
+
+      <!-- 布局列数 -->
+      <div class="select-wrap" title="瀑布流列数（自适应或手动）">
+        <select id="cols-select" aria-label="布局列数"></select>
+      </div>
+
+      <!-- 主题配色 -->
+      <div class="select-wrap" title="切换主题配色">
+        <select id="theme-select" aria-label="主题配色"></select>
+      </div>
+
+      <!-- 字体 -->
+      <div class="select-wrap" title="切换字体">
+        <select id="font-select" aria-label="字体"></select>
+      </div>
+
+      <div style="width:1px;height:24px;background:var(--color-border);margin:0 4px;"></div>
+
+      <!-- 导入 -->
+      <button
+        id="btn-import"
+        class="btn"
+        type="button"
+        title="从本地导入 JSON 备份"
+      >
+        <span>📥</span><span class="btn-text">导入</span>
+      </button>
+      <input
+        id="import-file-input"
+        class="hidden-file-input"
+        type="file"
+        accept=".json,application/json"
+      />
+
+      <!-- 导出 -->
+      <button
+        id="btn-export"
+        class="btn"
+        type="button"
+        title="导出当前数据为 JSON 备份"
+      >
+        <span>📤</span><span class="btn-text">导出</span>
+      </button>
+
+      <div style="width:1px;height:24px;background:var(--color-border);margin:0 4px;"></div>
+
+      <!-- 重新查看引导 -->
+      <button
+        id="btn-guide"
+        class="btn btn-icon"
+        type="button"
+        title="重新查看功能引导"
+      >
+        ❓
+      </button>
+
+      <!-- 新建按钮 -->
+      <button
+        id="btn-new"
+        class="btn btn-primary"
+        type="button"
+        title="新建灵感 (Ctrl+N)"
+      >
+        <span>＋</span><span class="btn-text">新建</span>
+      </button>
+
+      <!-- 滚动暂停/继续 -->
+      <button
+        id="btn-scroll-toggle"
+        class="btn btn-icon"
+        type="button"
+        title="暂停/继续卡片滚动"
+        style="display:none;"
+      >
+        ⏸
+      </button>
+    </div>
+  </header>
+
+  <!-- ========== 标签云 ========== -->
+  <div id="tagcloud" class="tagcloud"></div>
+
+  <!-- ========== 主内容：瀑布流卡片 ========== -->
+  <main class="main">
+    <div class="scroll-wrap">
+      <div class="scroll-inner">
+        <div id="waterfall" class="waterfall"></div>
+      </div>
+    </div>
+
+    <!-- 空状态 -->
+    <div id="empty-state" class="empty-state">
+      <div class="empty-illustration">🪄</div>
+      <h3 class="empty-title">还没有灵感记录</h3>
+      <p class="empty-desc">点击右上角「+ 新建」按钮，捕捉你的第一个想法吧。</p>
+      <p class="empty-hint">所有数据仅保存在当前浏览器，请定期导出备份。</p>
+    </div>
+  </main>
+
+  <!-- ========== JS 脚本（按依赖顺序加载 + 版本号防 304 缓存） ========== -->
+  <script src="js/utils.js?v=20260816v13"></script>
+  <script src="js/storage.js?v=20260816v13"></script>
+  <script src="js/theme.js?v=20260816v13"></script>
+  <script src="js/matrix-bg.js?v=20260816v13"></script>
+  <script src="js/cards.js?v=20260816v13"></script>
+  <script src="js/editor.js?v=20260816v13"></script>
+  <script src="js/guide.js?v=20260816v13"></script>
+  <script src="js/app.js?v=20260816v13"></script>
+</body>
+</html>

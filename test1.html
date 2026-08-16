@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="green" data-font="mono">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="灵感记录卡 - 黑客风格的本地灵感记录工具" />
+  <!-- ========== 彻底禁用浏览器缓存 ========== -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, max-age=0" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title>[test1 浮动模式] 灵感记录卡 · Inspire Cards</title>
+  <link rel="stylesheet" href="css/themes.css?v=20260816v13" />
+  <link rel="stylesheet" href="css/animations.css?v=20260816v13" />
+  <link rel="stylesheet" href="css/style.css?v=20260816v13" />
+  <!-- 预置数据：2 张卡片 → 浮动模式 -->
+  <script>
+    (function () {
+      var KEY_CARDS = 'inspire_cards';
+      var KEY_CONFIG = 'inspire_config';
+      var now = Date.now();
+      var presetCards = [
+        {
+          id: 'test1-card-001',
+          title: '浮动模式演示',
+          content: '本页面预置了 2 张卡片，内容高度不超过 1 屏，因此启用【浮动模式】。顶栏「＋新建」右侧有 ⏸ 按钮，可以手动暂停或恢复卡片浮动。\n\n· 浮动动画：卡片以 5~8 秒为周期，做缓慢的上下轻微跃动\n· 鼠标悬停到卡片区域时，浮动不变（动画一直有，靠按钮暂停）\n· 点击卡片 → 弹出「查看灵感」→ 再点「✏️ 编辑」进入编辑弹窗',
+          tags: ['演示', '浮动模式', 'test1'],
+          color: 'green',
+          createdAt: now - 2000,
+          updatedAt: now - 1000,
+        },
+        {
+          id: 'test1-card-002',
+          title: '设计灵感：黑客数据流背景',
+          content: 'Canvas 数字雨背景采用经典黑客雨模式：\n\n· 字符集以 01 二进制为主，混合少量符号\n· 列宽 = 字号 16px，字符位置「网格对齐」，避免同列字符重叠糊在一起\n· 每帧步进 1 个字符高度，不是 0.38 之类的子像素\n· 头部 75% 白色混合 + 0.9 透明度亮头，尾部按 0.8^j 指数衰减\n· 拖尾覆盖层 rgba(0,0,0,0.12)，视觉上有长尾但不会晕糊',
+          tags: ['演示', '设计思路', 'test1'],
+          color: 'cyan',
+          createdAt: now - 1800,
+          updatedAt: now - 900,
+        },
+      ];
+      var presetConfig = {
+        theme: 'green',
+        fontFamily: 'mono',
+        sortBy: 'updatedAt_desc',
+        cols: 'auto',
+        hasShownGuide: true,
+      };
+      try {
+        localStorage.setItem(KEY_CARDS, JSON.stringify(presetCards));
+        localStorage.setItem(KEY_CONFIG, JSON.stringify(presetConfig));
+        console.info('[test1] 已注入浮动模式预置数据：' + presetCards.length + ' 张卡片');
+      } catch (e) {
+        console.warn('[test1] localStorage 写入失败：' + e);
+      }
+    })();
+  </script>
+</head>
+<body>
+  <!-- ========== 顶部导航栏 ========== -->
+  <header class="topbar">
+    <div class="topbar-logo">
+      <span class="topbar-logo-icon" title="灵感记录卡">💡</span>
+      <span class="topbar-logo-text">灵感记录卡</span>
+    </div>
+
+    <div class="topbar-search">
+      <input
+        id="search-input"
+        type="search"
+        placeholder="搜索标题、内容或标签..."
+        autocomplete="off"
+        spellcheck="false"
+      />
+    </div>
+
+    <div class="topbar-controls">
+      <div class="select-wrap" title="排序方式">
+        <select id="sort-select" aria-label="排序方式"></select>
+      </div>
+      <div class="select-wrap" title="瀑布流列数（自适应或手动）">
+        <select id="cols-select" aria-label="布局列数"></select>
+      </div>
+      <div class="select-wrap" title="切换主题配色">
+        <select id="theme-select" aria-label="主题配色"></select>
+      </div>
+      <div class="select-wrap" title="切换字体">
+        <select id="font-select" aria-label="字体"></select>
+      </div>
+
+      <div style="width:1px;height:24px;background:var(--color-border);margin:0 4px;"></div>
+
+      <button id="btn-import" class="btn" type="button" title="从本地导入 JSON 备份">
+        <span>📥</span><span class="btn-text">导入</span>
+      </button>
+      <input id="import-file-input" class="hidden-file-input" type="file" accept=".json,application/json" />
+      <button id="btn-export" class="btn" type="button" title="导出当前数据为 JSON 备份">
+        <span>📤</span><span class="btn-text">导出</span>
+      </button>
+
+      <div style="width:1px;height:24px;background:var(--color-border);margin:0 4px;"></div>
+
+      <button id="btn-guide" class="btn btn-icon" type="button" title="重新查看功能引导">❓</button>
+      <button id="btn-new" class="btn btn-primary" type="button" title="新建灵感 (Ctrl+N)">
+        <span>＋</span><span class="btn-text">新建</span>
+      </button>
+      <button id="btn-scroll-toggle" class="btn btn-icon" type="button" title="暂停/继续卡片滚动" style="display:none;">⏸</button>
+    </div>
+  </header>
+
+  <!-- ========== 标签云 ========== -->
+  <div id="tagcloud" class="tagcloud"></div>
+
+  <!-- ========== 主内容：瀑布流卡片 ========== -->
+  <main class="main">
+    <div class="scroll-wrap">
+      <div class="scroll-inner">
+        <div id="waterfall" class="waterfall"></div>
+      </div>
+    </div>
+
+    <!-- 空状态 -->
+    <div id="empty-state" class="empty-state">
+      <div class="empty-illustration">🪄</div>
+      <h3 class="empty-title">还没有灵感记录</h3>
+      <p class="empty-desc">点击右上角「+ 新建」按钮，捕捉你的第一个想法吧。</p>
+      <p class="empty-hint">所有数据仅保存在当前浏览器，请定期导出备份。</p>
+    </div>
+  </main>
+
+  <!-- ========== JS 脚本 ========== -->
+  <script src="js/utils.js?v=20260816v13"></script>
+  <script src="js/storage.js?v=20260816v13"></script>
+  <script src="js/theme.js?v=20260816v13"></script>
+  <script src="js/matrix-bg.js?v=20260816v13"></script>
+  <script src="js/cards.js?v=20260816v13"></script>
+  <script src="js/editor.js?v=20260816v13"></script>
+  <script src="js/guide.js?v=20260816v13"></script>
+  <script src="js/app.js?v=20260816v13"></script>
+</body>
+</html>

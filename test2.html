@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="green" data-font="mono">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="灵感记录卡 - 黑客风格的本地灵感记录工具" />
+  <!-- ========== 彻底禁用浏览器缓存 ========== -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, max-age=0" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title>[test2 滚动模式] 灵感记录卡 · Inspire Cards</title>
+  <link rel="stylesheet" href="css/themes.css?v=20260816v13" />
+  <link rel="stylesheet" href="css/animations.css?v=20260816v13" />
+  <link rel="stylesheet" href="css/style.css?v=20260816v13" />
+  <!-- 预置数据：16 张卡片，内容较长超出 1 屏 → 滚动模式 -->
+  <script>
+    (function () {
+      var KEY_CARDS = 'inspire_cards';
+      var KEY_CONFIG = 'inspire_config';
+      var now = Date.now();
+      var titles = [
+        '01 · 产品架构总览',
+        '02 · 灵感捕捉：随时随地记',
+        '03 · 黑底绿数据流风格设计',
+        '04 · 卡片瀑布流布局思路',
+        '05 · 主题配色方案：4 套预设',
+        '06 · 字体切换：4 种不同感受',
+        '07 · 本地存储与导入导出',
+        '08 · 首次引导：功能介绍',
+        '09 · 先查看再编辑的交互',
+        '10 · 数字雨 Canvas 性能优化',
+        '11 · 响应式列数：自适应 + 手动',
+        '12 · 卡片多时浮动少时滚动',
+        '13 · 标签化分类与检索',
+        '14 · 搜索：标题/内容/标签模糊匹配',
+        '15 · 排序方式：更新时间 / 创建时间 / 标题',
+        '16 · 快捷键速查表',
+      ];
+      var contents = [
+        '前端采用原生 HTML + CSS + JavaScript，零构建、零框架依赖。\n数据层：localStorage 键值对（卡片数组 + 配置对象）。\n视图层：瀑布流卡片 + 顶栏控件 + 弹窗交互。\n背景层：Canvas 2D 数字雨动画，指针事件穿透不阻断交互。\n启动流程：加载脚本 → 读配置 → 读卡片 → 渲染瀑布流 → 决定模式 → 绑定事件。',
+        '灵感来了就记，3 秒就能丢进一张卡片。\n点击「＋新建」→ 填标题和正文 → 回车或 Ctrl+Enter 保存。\n正文可以写大段文字，卡片会自动撑开高度。\n记得定期「导出」备份，localStorage 清浏览器缓存就没了。',
+        '整体走《黑客帝国》风格但不牺牲阅读：\n背景：01 数据流向下滴落，头白尾绿。\n卡片：半透明深色玻璃质感，清晰可读。\n文字：主题色为高亮色 + 次级色正文 + 暗色背景。\n按钮：发光阴影 + 悬停放大 + 脉冲反馈。',
+        '瀑布流采用「CSS columns」方案，轻量可靠。\n列数：默认 auto，根据视口宽度 1/2/3/4 列自适应；用户可以手动切换（有 localStorage 记住）。\n卡片 break-inside: avoid，防止在列之间被切断。\n卡片少时 body.card-float-mode 开浮动；多时 .card-scroll-mode 开纵向循环滚动。',
+        '4 套主题配色：\n1. 黑客绿（默认）：#00ff88 主色，黑底。\n2. 赛博蓝：#31b3ff 主色，冷色调。\n3. 暗紫：#c77dff 主色，神秘。\n4. 琥珀橙：#ffb703 主色，温暖。\n切换通过 <select> + document.documentElement 的 data-theme 属性，CSS 变量跟着变。',
+        '4 种字体预设：\n1. 等宽字体（Courier New / JetBrains Mono 风）—— 程序员感，默认。\n2. 黑体（Microsoft YaHei / PingFang SC）—— 现代易读。\n3. 宋体（SimSun / Songti SC）—— 中文典籍质感。\n4. 楷体（KaiTi / STKaiti）—— 手写笔记感。\n同样通过 data-font 属性切换。',
+        '导出：点击「📤 导出」→ 下载 JSON 文件，文件名带年月日时分秒。\n导入：点击「📥 导入」→ 选 JSON → 弹出确认框，选择「合并（保留现有并新增）」或「覆盖（清除现有）」。\n数据格式：{ cards: [..], config: {..}, exportedAt: timestamp, version: 1 }。',
+        '首次启动 hasShownGuide=false 时自动弹出引导，5 步走完整流程：\nStep 0 · 欢迎页（居中面板，介绍）\nStep 1 · 新建按钮（挖空 + 闪烁边框 + 箭头）\nStep 2 · 标签与搜索\nStep 3 · 主题/字体/布局\nStep 4 · 导入导出 + 立即开始。\n结束后存 hasShownGuide=true，点顶栏 ❓ 可以重看。',
+        '点击卡片（空白处，非按钮/标签）→ 弹出👁️ 查看灵感弹窗：\n- 标题、创建时间、修改时间、正文完整内容、标签全部展示\n- 底部三按钮：🗑 删除 / 关闭 / ✏️ 编辑\n点「✏️ 编辑」才进入编辑模式，避免误修改。\n点卡片上的 #标签 → 直接筛选，不弹查看。',
+        '数字雨关键参数：\n- 字符集：01010101 为主，加少量 @#$% 符号\n- 字号 16px（网格对齐，字符不重叠）\n- 速度 0.5~1.4 倍（每帧步进 1 个字号）\n- 尾迹长度 6~55 字符（30% 短尾 + 70% 长尾疏密交错）\n- 拖尾覆盖 rgba(0,0,0,0.12)\n- 头部 alpha=0.9，j 每增 1 透明度乘 0.8\n性能：window.requestAnimationFrame + setInterval 帧调度，页面隐藏时自动 stop。',
+        '响应式断点：\n>= 1400px → 4 列\n>= 1000px → 3 列\n>= 640px → 2 列\n< 640px → 1 列\n用户手动切换 cols=1/2/3/4 时，强制 CSS columns 数，忽略断点。\ncols 存在 localStorage.config.cols，下次打开记住。',
+        '模式互斥判定：CardsManager._toggleDisplayMode 计算瀑布流高度与窗口高度对比，\n瀑布流内容高 <= 0.95 * 容器高 → 浮动模式（body.card-float-mode）\n> 0.95 → 滚动模式（复制一份内容 .scroll-inner clone，做 cardVerticalScroll 循环动画）\n模式切换会 tear down 旧状态，避免 clone 重复绑定。',
+        '标签系统：\n- 每张卡 0~N 个标签，标签在编辑弹窗里用回车 / 逗号 / 空格分割输入\n- 顶栏下方「标签云」展示所有不重复标签，后面带计数，点一下筛选，再点取消\n- 标签也可以作为筛选条件叠加在搜索上',
+        '搜索框位于顶栏中央，实时监听 input（debounce 250ms）：\n- 标题包含关键字（忽略大小写）\n- 正文包含关键字（忽略大小写）\n- 任一标签等于关键字\n三条件任一命中即保留，再叠加标签筛选（AND）。\n快捷键：/ 或 Ctrl+K 聚焦搜索框。',
+        '排序下拉：\n· updatedAt_desc（默认）：最近修改的在前面\n· updatedAt_asc：最早修改的在前面\n· createdAt_desc：最近新建的在前面\n· createdAt_asc：最早新建的在前面\n· title_asc / title_desc：标题字典序\n排序结果先过搜索+标签筛选，再决定浮动/滚动。',
+        '快捷键汇总：\nCtrl + N ：新建灵感\nCtrl + K 或 / ：聚焦搜索\nCtrl + Enter ：编辑弹窗快速保存\nCtrl + Shift + E ：导出 JSON\nEsc ：关闭弹窗 / 结束引导\n点击卡片（非按钮/标签）：查看\n点击标签：筛选\n',
+      ];
+      var tagSets = [
+        ['架构', '总览'],
+        ['核心功能', 'UX'],
+        ['视觉', '黑客风'],
+        ['布局', '响应式'],
+        ['主题', '配色'],
+        ['字体', '排版'],
+        ['存储', '备份'],
+        ['引导', '新手'],
+        ['交互', 'UX'],
+        ['性能', 'Canvas'],
+        ['布局', '列数'],
+        ['动画', '浮动', '滚动'],
+        ['标签', '分类'],
+        ['搜索', '筛选'],
+        ['排序', '列表'],
+        ['快捷键'],
+      ];
+      var colors = ['green', 'cyan', 'purple', 'amber', null, 'green', null, 'cyan', 'purple', 'amber', 'green', null, 'cyan', null, 'purple', 'amber'];
+      var cards = [];
+      for (var i = 0; i < 16; i++) {
+        cards.push({
+          id: 'test2-card-' + (1001 + i),
+          title: titles[i],
+          content: contents[i],
+          tags: tagSets[i],
+          color: colors[i] || null,
+          createdAt: now - (16 - i) * 1000,
+          updatedAt: now - (16 - i) * 500,
+        });
+      }
+      var presetConfig = {
+        theme: 'green',
+        fontFamily: 'mono',
+        sortBy: 'updatedAt_desc',
+        cols: 'auto',
+        hasShownGuide: true,
+      };
+      try {
+        localStorage.setItem(KEY_CARDS, JSON.stringify(cards));
+        localStorage.setItem(KEY_CONFIG, JSON.stringify(presetConfig));
+        console.info('[test2] 已注入滚动模式预置数据：' + cards.length + ' 张卡片');
+      } catch (e) {
+        console.warn('[test2] localStorage 写入失败：' + e);
+      }
+    })();
+  </script>
+</head>
+<body>
+  <!-- ========== 顶部导航栏 ========== -->
+  <header class="topbar">
+    <div class="topbar-logo">
+      <span class="topbar-logo-icon" title="灵感记录卡">💡</span>
+      <span class="topbar-logo-text">灵感记录卡</span>
+    </div>
+
+    <div class="topbar-search">
+      <input
+        id="search-input"
+        type="search"
+        placeholder="搜索标题、内容或标签..."
+        autocomplete="off"
+        spellcheck="false"
+      />
+    </div>
+
+    <div class="topbar-controls">
+      <div class="select-wrap" title="排序方式">
+        <select id="sort-select" aria-label="排序方式"></select>
+      </div>
+      <div class="select-wrap" title="瀑布流列数（自适应或手动）">
+        <select id="cols-select" aria-label="布局列数"></select>
+      </div>
+      <div class="select-wrap" title="切换主题配色">
+        <select id="theme-select" aria-label="主题配色"></select>
+      </div>
+      <div class="select-wrap" title="切换字体">
+        <select id="font-select" aria-label="字体"></select>
+      </div>
+
+      <div style="width:1px;height:24px;background:var(--color-border);margin:0 4px;"></div>
+
+      <button id="btn-import" class="btn" type="button" title="从本地导入 JSON 备份">
+        <span>📥</span><span class="btn-text">导入</span>
+      </button>
+      <input id="import-file-input" class="hidden-file-input" type="file" accept=".json,application/json" />
+      <button id="btn-export" class="btn" type="button" title="导出当前数据为 JSON 备份">
+        <span>📤</span><span class="btn-text">导出</span>
+      </button>
+
+      <div style="width:1px;height:24px;background:var(--color-border);margin:0 4px;"></div>
+
+      <button id="btn-guide" class="btn btn-icon" type="button" title="重新查看功能引导">❓</button>
+      <button id="btn-new" class="btn btn-primary" type="button" title="新建灵感 (Ctrl+N)">
+        <span>＋</span><span class="btn-text">新建</span>
+      </button>
+      <button id="btn-scroll-toggle" class="btn btn-icon" type="button" title="暂停/继续卡片滚动" style="display:none;">⏸</button>
+    </div>
+  </header>
+
+  <!-- ========== 标签云 ========== -->
+  <div id="tagcloud" class="tagcloud"></div>
+
+  <!-- ========== 主内容：瀑布流卡片 ========== -->
+  <main class="main">
+    <div class="scroll-wrap">
+      <div class="scroll-inner">
+        <div id="waterfall" class="waterfall"></div>
+      </div>
+    </div>
+
+    <!-- 空状态 -->
+    <div id="empty-state" class="empty-state">
+      <div class="empty-illustration">🪄</div>
+      <h3 class="empty-title">还没有灵感记录</h3>
+      <p class="empty-desc">点击右上角「+ 新建」按钮，捕捉你的第一个想法吧。</p>
+      <p class="empty-hint">所有数据仅保存在当前浏览器，请定期导出备份。</p>
+    </div>
+  </main>
+
+  <!-- ========== JS 脚本 ========== -->
+  <script src="js/utils.js?v=20260816v13"></script>
+  <script src="js/storage.js?v=20260816v13"></script>
+  <script src="js/theme.js?v=20260816v13"></script>
+  <script src="js/matrix-bg.js?v=20260816v13"></script>
+  <script src="js/cards.js?v=20260816v13"></script>
+  <script src="js/editor.js?v=20260816v13"></script>
+  <script src="js/guide.js?v=20260816v13"></script>
+  <script src="js/app.js?v=20260816v13"></script>
+</body>
+</html>

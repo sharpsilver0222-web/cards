@@ -1,0 +1,88 @@
+/* ============================================================
+ * animations.css - 卡片浮动、淡入、模态等动画
+ * ============================================================ */
+
+/* ---------- 卡片缓慢浮动（卡片较少时） ---------- */
+@keyframes cardFloat1 {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-5px); }
+}
+@keyframes cardFloat2 {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-7px); }
+}
+@keyframes cardFloat3 {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-4px); }
+}
+@keyframes cardFloat4 {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+
+.card-float-mode .card[data-float-idx='0'] { animation: cardFloat1 4.2s ease-in-out infinite; }
+.card-float-mode .card[data-float-idx='1'] { animation: cardFloat2 5.1s ease-in-out infinite; animation-delay: 0.4s; }
+.card-float-mode .card[data-float-idx='2'] { animation: cardFloat3 3.8s ease-in-out infinite; animation-delay: 0.8s; }
+.card-float-mode .card[data-float-idx='3'] { animation: cardFloat4 4.7s ease-in-out infinite; animation-delay: 1.2s; }
+.card-float-mode .card[data-float-idx='4'] { animation: cardFloat1 4.5s ease-in-out infinite; animation-delay: 1.6s; }
+.card-float-mode .card[data-float-idx='5'] { animation: cardFloat2 5.3s ease-in-out infinite; animation-delay: 2.0s; }
+.card-float-mode .card[data-float-idx='6'] { animation: cardFloat3 4.0s ease-in-out infinite; animation-delay: 2.4s; }
+.card-float-mode .card[data-float-idx='7'] { animation: cardFloat4 4.9s ease-in-out infinite; animation-delay: 2.8s; }
+/* 超过 8 张的按 0 来 */
+.card-float-mode .card[data-float-idx] {
+  will-change: transform;
+}
+
+/* ---------- 新卡片入场淡入 ---------- */
+@keyframes cardFadeIn {
+  from { opacity: 0; transform: translateY(16px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.card-enter {
+  animation: cardFadeIn 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+}
+
+/* ---------- 删除卡片淡出缩小 ---------- */
+@keyframes cardLeave {
+  from { opacity: 1; transform: scale(1); max-height: 1000px; }
+  to   { opacity: 0; transform: scale(0.7); max-height: 0; margin: 0; padding: 0; }
+}
+.card-leave {
+  animation: cardLeave 0.35s ease-in forwards;
+  overflow: hidden;
+}
+
+/* ---------- 模态弹窗淡入 ---------- */
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes modalZoomIn {
+  from { opacity: 0; transform: scale(0.92) translateY(12px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+.modal-mask { animation: modalFadeIn 0.2s ease-out both; }
+.modal-panel { animation: modalZoomIn 0.28s cubic-bezier(0.2, 0.9, 0.3, 1.1) both; }
+
+/* ---------- 按钮发光脉动 ---------- */
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 0 0 var(--color-accent-glow); }
+  50%      { box-shadow: 0 0 0 6px transparent; }
+}
+.btn-primary:focus-visible {
+  animation: glowPulse 1.8s ease-in-out infinite;
+}
+
+/* ---------- 标签出现 ---------- */
+@keyframes tagPop {
+  from { opacity: 0; transform: scale(0.6); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.tag-item { animation: tagPop 0.2s ease-out both; }
+
+/* ---------- 空状态图标轻微呼吸 ---------- */
+@keyframes emptyBreathe {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50%      { opacity: 0.85; transform: scale(1.04); }
+}
+.empty-illustration { animation: emptyBreathe 3.5s ease-in-out infinite; }

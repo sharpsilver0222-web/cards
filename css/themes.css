@@ -1,0 +1,174 @@
+/* ============================================================
+ * themes.css - 4 套数据流主题 + 字体预设 CSS 变量
+ * 通过切换 <html data-theme="xxx"> 和 <html data-font="xxx"> 生效
+ * ============================================================ */
+
+/* ---------- 1. 经典黑客绿（默认主题） ---------- */
+html[data-theme='green'] {
+  --color-bg: #0a0a0a;
+  --color-bg-overlay: rgba(10, 10, 10, 0.28); /* 遮罩层，确保文字可读性 */
+  --color-surface: rgba(18, 26, 20, 0.85);     /* 卡片等表面 */
+  --color-surface-hover: rgba(26, 38, 30, 0.95);
+  --color-border: rgba(0, 255, 65, 0.18);
+  --color-border-strong: rgba(0, 255, 65, 0.45);
+  --color-text: #d8f5dd;
+  --color-text-dim: #88a890;
+  --color-text-muted: #567a60;
+  --color-accent: #00ff41;
+  --color-accent-dim: rgba(0, 255, 65, 0.15);
+  --color-accent-glow: rgba(0, 255, 65, 0.45);
+  --color-danger: #ff5f56;
+  --color-danger-dim: rgba(255, 95, 86, 0.15);
+  --color-tag-bg: rgba(0, 255, 65, 0.12);
+  --color-tag-text: #6ff08a;
+  --color-input-bg: rgba(0, 12, 5, 0.7);
+  --color-input-border: rgba(0, 255, 65, 0.25);
+  --color-scrollbar-thumb: rgba(0, 255, 65, 0.3);
+  --color-scrollbar-track: rgba(0, 0, 0, 0.4);
+}
+
+/* ---------- 2. 赛博蓝 ---------- */
+html[data-theme='blue'] {
+  --color-bg: #070f1a;
+  --color-bg-overlay: rgba(7, 15, 26, 0.28);
+  --color-surface: rgba(14, 26, 42, 0.85);
+  --color-surface-hover: rgba(20, 38, 60, 0.95);
+  --color-border: rgba(0, 212, 255, 0.18);
+  --color-border-strong: rgba(0, 212, 255, 0.45);
+  --color-text: #d3f0ff;
+  --color-text-dim: #84a8bd;
+  --color-text-muted: #4f7188;
+  --color-accent: #00d4ff;
+  --color-accent-dim: rgba(0, 212, 255, 0.15);
+  --color-accent-glow: rgba(0, 212, 255, 0.45);
+  --color-danger: #ff5f56;
+  --color-danger-dim: rgba(255, 95, 86, 0.15);
+  --color-tag-bg: rgba(0, 212, 255, 0.12);
+  --color-tag-text: #6ddcf5;
+  --color-input-bg: rgba(0, 10, 18, 0.7);
+  --color-input-border: rgba(0, 212, 255, 0.25);
+  --color-scrollbar-thumb: rgba(0, 212, 255, 0.3);
+  --color-scrollbar-track: rgba(0, 0, 0, 0.4);
+}
+
+/* ---------- 3. 暗紫 ---------- */
+html[data-theme='purple'] {
+  --color-bg: #110819;
+  --color-bg-overlay: rgba(17, 8, 25, 0.82);
+  --color-surface: rgba(30, 18, 46, 0.85);
+  --color-surface-hover: rgba(42, 26, 62, 0.95);
+  --color-border: rgba(199, 125, 255, 0.18);
+  --color-border-strong: rgba(199, 125, 255, 0.45);
+  --color-text: #efd8ff;
+  --color-text-dim: #ac88c4;
+  --color-text-muted: #735490;
+  --color-accent: #c77dff;
+  --color-accent-dim: rgba(199, 125, 255, 0.15);
+  --color-accent-glow: rgba(199, 125, 255, 0.45);
+  --color-danger: #ff5f56;
+  --color-danger-dim: rgba(255, 95, 86, 0.15);
+  --color-tag-bg: rgba(199, 125, 255, 0.12);
+  --color-tag-text: #d8a8ff;
+  --color-input-bg: rgba(12, 4, 20, 0.7);
+  --color-input-border: rgba(199, 125, 255, 0.25);
+  --color-scrollbar-thumb: rgba(199, 125, 255, 0.3);
+  --color-scrollbar-track: rgba(0, 0, 0, 0.4);
+}
+
+/* ---------- 4. 琥珀橙 ---------- */
+html[data-theme='amber'] {
+  --color-bg: #1a1208;
+  --color-bg-overlay: rgba(26, 18, 8, 0.28);
+  --color-surface: rgba(42, 30, 14, 0.85);
+  --color-surface-hover: rgba(58, 42, 20, 0.95);
+  --color-border: rgba(255, 183, 3, 0.18);
+  --color-border-strong: rgba(255, 183, 3, 0.45);
+  --color-text: #ffeccf;
+  --color-text-dim: #bfa16c;
+  --color-text-muted: #866a3c;
+  --color-accent: #ffb703;
+  --color-accent-dim: rgba(255, 183, 3, 0.15);
+  --color-accent-glow: rgba(255, 183, 3, 0.45);
+  --color-danger: #ff5f56;
+  --color-danger-dim: rgba(255, 95, 86, 0.15);
+  --color-tag-bg: rgba(255, 183, 3, 0.12);
+  --color-tag-text: #ffd06a;
+  --color-input-bg: rgba(18, 12, 2, 0.7);
+  --color-input-border: rgba(255, 183, 3, 0.25);
+  --color-scrollbar-thumb: rgba(255, 183, 3, 0.3);
+  --color-scrollbar-track: rgba(0, 0, 0, 0.4);
+}
+
+/* ============================================================
+ * 卡片 6 种配色预设（每张卡片可选，data-card-color 属性）
+ * ============================================================ */
+
+/* 1. 跟随主题色（默认） */
+.card[data-card-color='theme_default'] {
+  background: var(--color-surface);
+  border-color: var(--color-border);
+}
+
+/* 2. 纯黑低透明 */
+.card[data-card-color='pure_black'] {
+  background: rgba(0, 0, 0, 0.75);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* 3. 深灰半透明 */
+.card[data-card-color='dark_gray'] {
+  background: rgba(40, 40, 42, 0.75);
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+/* 4. 矩阵绿（固定，不受主题影响） */
+.card[data-card-color='matrix_green'] {
+  background: rgba(0, 28, 10, 0.78);
+  border-color: rgba(0, 255, 65, 0.22);
+}
+.card[data-card-color='matrix_green'] .card-title,
+.card[data-card-color='matrix_green'] .card-content,
+.card[data-card-color='matrix_green'] .card-time {
+  color: #c8f5d0;
+}
+.card[data-card-color='matrix_green'] .card-tag {
+  background: rgba(0, 255, 65, 0.12);
+  color: #6ff08a;
+}
+
+/* 5. 深靛蓝 */
+.card[data-card-color='deep_indigo'] {
+  background: rgba(12, 20, 50, 0.8);
+  border-color: rgba(99, 102, 241, 0.22);
+}
+
+/* 6. 暗酒红 */
+.card[data-card-color='dark_wine'] {
+  background: rgba(48, 12, 22, 0.8);
+  border-color: rgba(220, 38, 80, 0.22);
+}
+
+/* ============================================================
+ * 字体预设（4 种）
+ * ============================================================ */
+
+/* 1. 等宽字体（默认，黑客风） */
+html[data-font='mono'] {
+  --font-family: Consolas, Monaco, 'Courier New', 'Microsoft YaHei Mono', monospace;
+}
+
+/* 2. 无衬线黑体 */
+html[data-font='sans'] {
+  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
+    'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+}
+
+/* 3. 衬线宋体 */
+html[data-font='serif'] {
+  --font-family: 'SimSun', 'Songti SC', 'Source Han Serif SC', 'Noto Serif CJK SC', serif;
+}
+
+/* 4. 楷体 */
+html[data-font='kaiti'] {
+  --font-family: 'KaiTi', 'STKaiti', '华文楷体', '楷体', 'Source Han Serif SC', serif;
+}
